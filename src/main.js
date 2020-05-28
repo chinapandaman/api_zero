@@ -10,12 +10,12 @@ const db = new Sequelize({
 
 db.authenticate()
     .then(() => {console.log("connected");})
-    .catch(err => {console.error(err);});
+    .catch(err => {console.error(err);})
 
 app.get('/', function (req, res) {
-  res.send('Hello World!');
+    res.send('Hello World!');
 });
 
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+    console.log('Example app listening on port 3000!');
 });
