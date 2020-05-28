@@ -4,9 +4,10 @@
   "description": "JSON schema driven RESTFUL API framework",
   "main": "app/app.js",
   "scripts": {
+    "start": "cd app && node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Jinge Li",
   "license": "MIT",
   "dependencies": {
     "express": "^4.13.4",
