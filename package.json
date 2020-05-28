@@ -1,14 +1,15 @@
 {
-  "name": "nodejs-sample",
+  "name": "api_zero",
   "version": "1.0.0",
-  "description": "",
+  "description": "JSON schema driven RESTFUL API framework",
   "main": "app/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "EPL-2.0",
+  "license": "MIT",
   "dependencies": {
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "jsonschema": "^1.2.6"
   }
 }
