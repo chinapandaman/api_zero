@@ -2,9 +2,9 @@
   "name": "api_zero",
   "version": "1.0.0",
   "description": "JSON schema driven RESTFUL API framework",
-  "main": "app/app.js",
+  "main": "src/main.js",
   "scripts": {
-    "start": "cd app && node app.js",
+    "start": "node src/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jinge Li",
