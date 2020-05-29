@@ -5,13 +5,14 @@
   "main": "src/main.js",
   "scripts": {
     "start": "node src/main.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "Jinge Li",
   "license": "MIT",
   "dependencies": {
     "express": "^4.13.4",
     "jsonschema": "^1.2.6",
+    "mocha": "^7.2.0",
     "sequelize": "^5.21.11",
     "sqlite3": "^4.2.0"
   }
