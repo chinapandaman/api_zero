@@ -9,6 +9,10 @@ describe("Test Schema Based", function() {
          db = new Sequelize("sqlite::memory:");
     });
 
+    afterEach(function(){
+        db.close();
+    })
+
     it("no nested objects or arrays", function() {
         let test_schema = {
             "$schema": "http://json-schema.org/draft-07/schema#",
