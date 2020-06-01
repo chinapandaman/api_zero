@@ -47,4 +47,37 @@ describe("Test Schema Based", function() {
         assert.equal(db.models.person.rawAttributes.is_active.type.key, DataTypes.BOOLEAN.key);
         assert.equal(db.models.person.rawAttributes.nothing.type.key, DataTypes.STRING.key);
     });
+
+    it("nested objects and arrays", function(){
+        let test_schema = {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "$id": "http://example.com/person.schema.json",
+            "title": "person",
+            "description": "a person",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "object",
+                    "properties": {
+                        "first_name": {
+                            "type": "string"
+                        },
+                        "last_name": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "lucky_numbers": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "required": []
+        }
+        
+        let person = schema_based.schema_to_model(db, test_schema);
+        assert.equal(person, db.models.person);
+    });
 });
