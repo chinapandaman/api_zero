@@ -10,10 +10,17 @@ module.exports = {
             let property = schema["properties"][key];
 
             if (property["type"] === "object"){
-                nested_objects.push(schema_to_model(db, property));
+                let new_schema = property;
+                new_schema["title"] = key
+                nested_objects.push(schema_to_model(db, new_schema));
             }
             else if (property["type"] === "array"){
-                nested_arrays.push(schema_to_model(db, property));
+                let new_schema = {
+                    "title": key,
+                    "properties": {}
+                };
+                new_schema["properties"][key] = property["items"];
+                nested_arrays.push(schema_to_model(db, new_schema));
             }
             else{
                 let type;

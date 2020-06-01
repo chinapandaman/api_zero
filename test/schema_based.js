@@ -67,17 +67,24 @@ describe("Test Schema Based", function() {
                         }
                     }
                 },
-                "lucky_numbers": {
+                "gender": {
+                    "type": "string"
+                },
+                "lucky_number": {
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
-                }
+                },
             },
             "required": []
         }
         
         let person = schema_based.schema_to_model(db, test_schema);
         assert.equal(person, db.models.person);
+        assert.equal(db.models.person.rawAttributes.gender.type.key, DataTypes.STRING.key);
+        assert.equal(db.models.name.rawAttributes.first_name.type.key, DataTypes.STRING.key);
+        assert.equal(db.models.name.rawAttributes.last_name.type.key, DataTypes.STRING.key);
+        assert.equal(db.models.lucky_number.rawAttributes.lucky_number.type.key, DataTypes.INTEGER.key);
     });
 });
