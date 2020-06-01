@@ -48,5 +48,7 @@ module.exports = {
             result.hasMany(nested_arrays[i]);
             nested_arrays[i].belongsTo(result);
         }
+
+        return result;
     }
 }
