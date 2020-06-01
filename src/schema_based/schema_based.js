@@ -1,31 +1,34 @@
 const DataTypes = require("sequelize");
 
-function schema_to_model(db, schema){
-    schema_type_to_model_type = {
-        "string": "STRING"
+module.exports = {
+    "schema_to_model": function (db, schema){
+        let field_obj = {};
+
+        for (let key in schema["properties"]){
+            let property = schema["properties"][key];
+
+            if (property["type"] === "object"){
+                schema_to_model(db, property);
+                field_obj[key] = {};
+            }
+            else if (property["type"] === "array"){
+                schema_to_model(db, property["items"]);
+                field_obj[key] = {};
+            }
+            else{
+                let type;
+                switch(property["type"]){
+                    case "string":
+                        type = DataTypes.STRING;
+                    default:
+                        type = DataTypes.STRING;
+                }
+                field_obj[key] = {
+                    "type": type
+                }
+            }
+        }
+
+        return db.define(schema["title"], field_obj);
     }
-
-    let field_obj = {};
-
-    for (let key in schema["properties"]){
-        let property = schema[key];
-
-        if (property["type"] === "object"){
-            schema_to_model(db, property);
-            field_obj[key] = {};
-        }
-        else if (property["type"] === "array"){
-            schema_to_model(db, property["items"]);
-            field_obj[key] = {};
-        }
-        else{
-            field_obj[key] = {
-                "type": schema_type_to_model_type[property["type"]],
-            };
-        }
-    }
-
-    const new_table = db.define(schema["title"], field_obj);
-
-    console.log(new_table === db.models.new_table);
 }
