@@ -86,5 +86,7 @@ describe("Test Schema Based", function() {
         assert.equal(db.models.name.rawAttributes.first_name.type.key, DataTypes.STRING.key);
         assert.equal(db.models.name.rawAttributes.last_name.type.key, DataTypes.STRING.key);
         assert.equal(db.models.lucky_number.rawAttributes.lucky_number.type.key, DataTypes.INTEGER.key);
+        assert.equal("personId" in db.models.person.associations.name.target.rawAttributes, true);
+        assert.equal("personId" in db.models.person.associations.lucky_numbers.target.rawAttributes, true);
     });
 });
