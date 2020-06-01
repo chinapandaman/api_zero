@@ -3,17 +3,17 @@ const DataTypes = require("sequelize");
 module.exports = {
     "schema_to_model": function (db, schema){
         let field_obj = {};
+        let nested_objects = [];
+        let nested_arrays = [];
 
         for (let key in schema["properties"]){
             let property = schema["properties"][key];
 
             if (property["type"] === "object"){
-                schema_to_model(db, property);
-                field_obj[key] = {};
+                nested_objects.push(schema_to_model(db, property));
             }
             else if (property["type"] === "array"){
-                schema_to_model(db, property["items"]);
-                field_obj[key] = {};
+                nested_arrays.push(schema_to_model(db, property));
             }
             else{
                 let type;
@@ -39,6 +39,14 @@ module.exports = {
             }
         }
 
-        return db.define(schema["title"], field_obj);
+        let result = db.define(schema["title"], field_obj);
+        for (let i = 0; i < nested_objects.length; i ++){
+            result.hasOne(nested_objects[i]);
+            nested_objects[i].belongsTo(result);
+        }
+        for (let i = 0; i < nested_arrays.length; i ++){
+            result.hasMany(nested_arrays[i]);
+            nested_arrays[i].belongsTo(result);
+        }
     }
 }
