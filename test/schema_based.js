@@ -1,6 +1,6 @@
 const assert = require("assert");
 const schema_based = require("./../src/schema_based/schema_based");
-const Sequelize = require("sequelize");
+const {DataTypes, Sequelize} = require("sequelize");
 
 describe("Test Schema Based", function() {
     let db;
@@ -21,16 +21,30 @@ describe("Test Schema Based", function() {
             "description": "a person",
             "type": "object",
             "properties": {
-                "first_name": {
+                "name": {
                     "type": "string"
                 },
-                "last_name": {
-                    "type": "string"
+                "age": {
+                    "type": "integer"
+                },
+                "height": {
+                    "type": "number"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "nothing": {
+                    "type": "null"
                 }
             },
             "required": []
         }
         let person = schema_based.schema_to_model(db, test_schema);
         assert.equal(person, db.models.person);
+        assert.equal(db.models.person.rawAttributes.name.type.key, DataTypes.STRING.key);
+        assert.equal(db.models.person.rawAttributes.age.type.key, DataTypes.INTEGER.key);
+        assert.equal(db.models.person.rawAttributes.height.type.key, DataTypes.FLOAT.key);
+        assert.equal(db.models.person.rawAttributes.is_active.type.key, DataTypes.BOOLEAN.key);
+        assert.equal(db.models.person.rawAttributes.nothing.type.key, DataTypes.STRING.key);
     });
 });

@@ -20,6 +20,16 @@ module.exports = {
                 switch(property["type"]){
                     case "string":
                         type = DataTypes.STRING;
+                        break;
+                    case "integer":
+                        type = DataTypes.INTEGER;
+                        break;
+                    case "number":
+                        type = DataTypes.FLOAT;
+                        break;
+                    case "boolean":
+                        type = DataTypes.BOOLEAN;
+                        break;
                     default:
                         type = DataTypes.STRING;
                 }
