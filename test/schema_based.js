@@ -6,7 +6,7 @@ describe("Test Schema Based", function() {
     let db;
     
     beforeEach(function(){
-         db = new Sequelize("sqlite::memory:");
+        db = new Sequelize("sqlite::memory:");
     });
 
     afterEach(function(){
