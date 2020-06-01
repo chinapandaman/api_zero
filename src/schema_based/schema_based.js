@@ -1,7 +1,7 @@
 const DataTypes = require("sequelize");
 
 module.exports = {
-    "schema_to_model": function (db, schema){
+    "schema_to_model": function schema_to_model(db, schema){
         let field_obj = {};
         let nested_objects = [];
         let nested_arrays = [];
