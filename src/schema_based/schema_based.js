@@ -1,30 +1,28 @@
 const DataTypes = require("sequelize");
 
 module.exports = {
-    "schema_to_model": function schema_to_model(db, schema){
+    schema_to_model: function schema_to_model(db, schema) {
         let field_obj = {};
         let nested_objects = [];
         let nested_arrays = [];
 
-        for (let key in schema["properties"]){
+        for (let key in schema["properties"]) {
             let property = schema["properties"][key];
 
-            if (property["type"] === "object"){
+            if (property["type"] === "object") {
                 let new_schema = property;
-                new_schema["title"] = key
+                new_schema["title"] = key;
                 nested_objects.push(schema_to_model(db, new_schema));
-            }
-            else if (property["type"] === "array"){
+            } else if (property["type"] === "array") {
                 let new_schema = {
-                    "title": key,
-                    "properties": {}
+                    title: key,
+                    properties: {},
                 };
                 new_schema["properties"][key] = property["items"];
                 nested_arrays.push(schema_to_model(db, new_schema));
-            }
-            else{
+            } else {
                 let type;
-                switch(property["type"]){
+                switch (property["type"]) {
                     case "string":
                         type = DataTypes.STRING;
                         break;
@@ -41,21 +39,21 @@ module.exports = {
                         type = DataTypes.STRING;
                 }
                 field_obj[key] = {
-                    "type": type
-                }
+                    type: type,
+                };
             }
         }
 
         let result = db.define(schema["title"], field_obj);
-        for (let i = 0; i < nested_objects.length; i ++){
+        for (let i = 0; i < nested_objects.length; i++) {
             result.hasOne(nested_objects[i]);
             nested_objects[i].belongsTo(result);
         }
-        for (let i = 0; i < nested_arrays.length; i ++){
+        for (let i = 0; i < nested_arrays.length; i++) {
             result.hasMany(nested_arrays[i]);
             nested_arrays[i].belongsTo(result);
         }
 
         return result;
-    }
-}
+    },
+};
