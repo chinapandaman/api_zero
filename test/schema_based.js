@@ -171,4 +171,158 @@ describe("test schema_to_models", function () {
             );
         });
     });
+
+    describe("test schema_to_models with schema with two layer nested objects and arrays", function(){
+        let db, person;
+        let test_schema = {
+            $schema: "http://json-schema.org/draft-07/schema#",
+            $id: "http://example.com/person.schema.json",
+            title: "person",
+            description: "a person",
+            type: "object",
+            properties: {
+                name: {
+                    type: "string",
+                },
+                house:{
+                    type: "object",
+                    properties: {
+                        area: {
+                            type: "number"
+                        },
+                        address: {
+                            type: "object",
+                            properties: {
+                                street: {
+                                    type: "string"
+                                },
+                                city: {
+                                    type: "string"
+                                },
+                                state: {
+                                    type: "string"
+                                },
+                                zip: {
+                                    type: "string"
+                                }
+                            }
+                        },
+                        price_history: {
+                            type: "array",
+                            items: {
+                                type: "number"
+                            }
+                        }
+                    }
+                },
+                vehicle: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        properties: {
+                            make: {
+                                type: "string"
+                            },
+                            model: {
+                                type: "string"
+                            }
+                        }
+                    }
+                }
+            },
+            required: [],
+        };
+
+        beforeEach(function () {
+            db = new Sequelize("sqlite::memory:");
+            person = schema_based.schema_to_model(db, test_schema);
+        });
+
+        it("test person model creation", function(){
+            assert.equal(person, db.models.person);
+        });
+
+        it("test person.name is string", function(){
+            assert.equal(
+                db.models.person.rawAttributes.name.type.key,
+                DataTypes.STRING.key
+            );
+        });
+
+        it("test one to one relation between person and house", function () {
+            assert.equal(
+                "personId" in
+                    db.models.person.associations.house.target.rawAttributes,
+                true
+            );
+        });
+
+        it("test house.area is float", function(){
+            assert.equal(
+                db.models.house.rawAttributes.area.type.key,
+                DataTypes.FLOAT.key
+            );
+        });
+
+        it("test one to one relation between house and address", function () {
+            assert.equal(
+                "houseId" in
+                    db.models.house.associations.address.target.rawAttributes,
+                true
+            );
+        });
+
+        it("test address.street is string", function(){
+            assert.equal(
+                db.models.address.rawAttributes.street.type.key,
+                DataTypes.STRING.key
+            );
+        });
+
+        it("test address.city is string", function(){
+            assert.equal(
+                db.models.address.rawAttributes.city.type.key,
+                DataTypes.STRING.key
+            );
+        });
+
+        it("test address.state is string", function(){
+            assert.equal(
+                db.models.address.rawAttributes.state.type.key,
+                DataTypes.STRING.key
+            );
+        });
+
+        it("test address.zip is string", function(){
+            assert.equal(
+                db.models.address.rawAttributes.zip.type.key,
+                DataTypes.STRING.key
+            );
+        });
+
+        it("test one to many relation between house and price_history", function () {
+            assert.equal(
+                "houseId" in
+                    db.models.house.associations.price_histories.target
+                        .rawAttributes,
+                true
+            );
+        });
+
+        it("test price_history.price_history is float", function(){
+            assert.equal(
+                db.models.price_history.rawAttributes.price_history.type.key,
+                DataTypes.FLOAT.key
+            );
+        });
+
+        it("test one to many relation between person and vehicle", function () {
+            assert.equal(
+                "personId" in
+                    db.models.person.associations.vehicles.target
+                        .rawAttributes,
+                true
+            );
+        });
+    });
 });
