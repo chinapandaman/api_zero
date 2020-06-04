@@ -3,17 +3,8 @@ const schema_based = require("../src/schema_based/schema_to_model");
 const { DataTypes, Sequelize } = require("sequelize");
 
 describe("test schema_to_models", function () {
-    let db;
-
-    beforeEach(function () {
-        db = new Sequelize("sqlite::memory:");
-    });
-
-    afterEach(function () {
-        db.close();
-    });
-
-    it("no nested objects or arrays", function () {
+    describe("test schema_to_models with flattened schema", function () {
+        let db, person;
         let test_schema = {
             $schema: "http://json-schema.org/draft-07/schema#",
             $id: "http://example.com/person.schema.json",
@@ -39,31 +30,58 @@ describe("test schema_to_models", function () {
             },
             required: [],
         };
-        let person = schema_based.schema_to_model(db, test_schema);
-        assert.equal(person, db.models.person);
-        assert.equal(
-            db.models.person.rawAttributes.name.type.key,
-            DataTypes.STRING.key
-        );
-        assert.equal(
-            db.models.person.rawAttributes.age.type.key,
-            DataTypes.INTEGER.key
-        );
-        assert.equal(
-            db.models.person.rawAttributes.height.type.key,
-            DataTypes.FLOAT.key
-        );
-        assert.equal(
-            db.models.person.rawAttributes.is_active.type.key,
-            DataTypes.BOOLEAN.key
-        );
-        assert.equal(
-            db.models.person.rawAttributes.nothing.type.key,
-            DataTypes.STRING.key
-        );
+
+        beforeEach(function () {
+            db = new Sequelize("sqlite::memory:");
+            person = schema_based.schema_to_model(db, test_schema);
+        });
+
+        afterEach(function () {
+            db.close();
+        });
+
+        it("test person model creation", function () {
+            assert.equal(person, db.models.person);
+        });
+
+        it("test person.name is string", function () {
+            assert.equal(
+                db.models.person.rawAttributes.name.type.key,
+                DataTypes.STRING.key
+            );
+        });
+
+        it("test person.age is integer", function () {
+            assert.equal(
+                db.models.person.rawAttributes.age.type.key,
+                DataTypes.INTEGER.key
+            );
+        });
+
+        it("test person.height is float", function () {
+            assert.equal(
+                db.models.person.rawAttributes.height.type.key,
+                DataTypes.FLOAT.key
+            );
+        });
+
+        it("test person.is_active is boolean", function () {
+            assert.equal(
+                db.models.person.rawAttributes.is_active.type.key,
+                DataTypes.BOOLEAN.key
+            );
+        });
+
+        it("test person.nothing is null", function () {
+            assert.equal(
+                db.models.person.rawAttributes.nothing.type.key,
+                DataTypes.STRING.key
+            );
+        });
     });
 
-    it("nested objects and arrays", function () {
+    describe("test schema_to_models with schema with one layer nested objects and arrays", function () {
+        let db, person;
         let test_schema = {
             $schema: "http://json-schema.org/draft-07/schema#",
             $id: "http://example.com/person.schema.json",
@@ -95,34 +113,62 @@ describe("test schema_to_models", function () {
             required: [],
         };
 
-        let person = schema_based.schema_to_model(db, test_schema);
-        assert.equal(person, db.models.person);
-        assert.equal(
-            db.models.person.rawAttributes.gender.type.key,
-            DataTypes.STRING.key
-        );
-        assert.equal(
-            db.models.name.rawAttributes.first_name.type.key,
-            DataTypes.STRING.key
-        );
-        assert.equal(
-            db.models.name.rawAttributes.last_name.type.key,
-            DataTypes.STRING.key
-        );
-        assert.equal(
-            db.models.lucky_number.rawAttributes.lucky_number.type.key,
-            DataTypes.INTEGER.key
-        );
-        assert.equal(
-            "personId" in
-                db.models.person.associations.name.target.rawAttributes,
-            true
-        );
-        assert.equal(
-            "personId" in
-                db.models.person.associations.lucky_numbers.target
-                    .rawAttributes,
-            true
-        );
+        beforeEach(function () {
+            db = new Sequelize("sqlite::memory:");
+            person = schema_based.schema_to_model(db, test_schema);
+        });
+
+        afterEach(function () {
+            db.close();
+        });
+
+        it("test person model creation", function () {
+            assert.equal(person, db.models.person);
+        });
+
+        it("test person.gender is string", function () {
+            assert.equal(
+                db.models.person.rawAttributes.gender.type.key,
+                DataTypes.STRING.key
+            );
+        });
+
+        it("test name.first_name is string", function () {
+            assert.equal(
+                db.models.name.rawAttributes.first_name.type.key,
+                DataTypes.STRING.key
+            );
+        });
+
+        it("test name.last_name is string", function () {
+            assert.equal(
+                db.models.name.rawAttributes.last_name.type.key,
+                DataTypes.STRING.key
+            );
+        });
+
+        it("test lukcy_number.lucky_number is integer", function () {
+            assert.equal(
+                db.models.lucky_number.rawAttributes.lucky_number.type.key,
+                DataTypes.INTEGER.key
+            );
+        });
+
+        it("test one to one relation between person and name", function () {
+            assert.equal(
+                "personId" in
+                    db.models.person.associations.name.target.rawAttributes,
+                true
+            );
+        });
+
+        it("test one to many relation between person and lucky_number", function () {
+            assert.equal(
+                "personId" in
+                    db.models.person.associations.lucky_numbers.target
+                        .rawAttributes,
+                true
+            );
+        });
     });
 });
