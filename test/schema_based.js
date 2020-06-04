@@ -147,7 +147,7 @@ describe("test schema_to_models", function () {
             );
         });
 
-        it("test lukcy_number.lucky_number is integer", function () {
+        it("test lucky_number.lucky_number is integer", function () {
             assert.equal(
                 db.models.lucky_number.rawAttributes.lucky_number.type.key,
                 DataTypes.INTEGER.key
