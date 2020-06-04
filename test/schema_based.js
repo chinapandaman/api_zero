@@ -1,8 +1,8 @@
 const assert = require("assert");
-const schema_based = require("./../src/schema_based/schema_based");
+const schema_based = require("../src/schema_based/schema_to_model");
 const { DataTypes, Sequelize } = require("sequelize");
 
-describe("Test Schema Based", function () {
+describe("test schema_to_models", function () {
     let db;
 
     beforeEach(function () {
