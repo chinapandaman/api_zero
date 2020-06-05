@@ -172,7 +172,7 @@ describe("test schema_to_models", function () {
         });
     });
 
-    describe("test schema_to_models with schema with two layer nested objects and arrays", function(){
+    describe("test schema_to_models with schema with two layer nested objects and arrays", function () {
         let db, person;
         let test_schema = {
             $schema: "http://json-schema.org/draft-07/schema#",
@@ -184,36 +184,36 @@ describe("test schema_to_models", function () {
                 name: {
                     type: "string",
                 },
-                house:{
+                house: {
                     type: "object",
                     properties: {
                         area: {
-                            type: "number"
+                            type: "number",
                         },
                         address: {
                             type: "object",
                             properties: {
                                 street: {
-                                    type: "string"
+                                    type: "string",
                                 },
                                 city: {
-                                    type: "string"
+                                    type: "string",
                                 },
                                 state: {
-                                    type: "string"
+                                    type: "string",
                                 },
                                 zip: {
-                                    type: "string"
-                                }
-                            }
+                                    type: "string",
+                                },
+                            },
                         },
                         price_history: {
                             type: "array",
                             items: {
-                                type: "number"
-                            }
-                        }
-                    }
+                                type: "number",
+                            },
+                        },
+                    },
                 },
                 vehicle: {
                     type: "array",
@@ -221,13 +221,13 @@ describe("test schema_to_models", function () {
                         type: "object",
                         properties: {
                             make: {
-                                type: "string"
+                                type: "string",
                             },
                             model: {
-                                type: "string"
-                            }
-                        }
-                    }
+                                type: "string",
+                            },
+                        },
+                    },
                 },
                 matrix: {
                     type: "array",
@@ -235,10 +235,10 @@ describe("test schema_to_models", function () {
                         type: "array",
                         items: {
                             title: "element",
-                            type: "integer"
-                        }
-                    }
-                }
+                            type: "integer",
+                        },
+                    },
+                },
             },
             required: [],
         };
@@ -248,11 +248,11 @@ describe("test schema_to_models", function () {
             person = schema_based.schema_to_model(db, test_schema);
         });
 
-        it("test person model creation", function(){
+        it("test person model creation", function () {
             assert.equal(person, db.models.person);
         });
 
-        it("test person.name is string", function(){
+        it("test person.name is string", function () {
             assert.equal(
                 db.models.person.rawAttributes.name.type.key,
                 DataTypes.STRING.key
@@ -267,7 +267,7 @@ describe("test schema_to_models", function () {
             );
         });
 
-        it("test house.area is float", function(){
+        it("test house.area is float", function () {
             assert.equal(
                 db.models.house.rawAttributes.area.type.key,
                 DataTypes.FLOAT.key
@@ -282,28 +282,28 @@ describe("test schema_to_models", function () {
             );
         });
 
-        it("test address.street is string", function(){
+        it("test address.street is string", function () {
             assert.equal(
                 db.models.address.rawAttributes.street.type.key,
                 DataTypes.STRING.key
             );
         });
 
-        it("test address.city is string", function(){
+        it("test address.city is string", function () {
             assert.equal(
                 db.models.address.rawAttributes.city.type.key,
                 DataTypes.STRING.key
             );
         });
 
-        it("test address.state is string", function(){
+        it("test address.state is string", function () {
             assert.equal(
                 db.models.address.rawAttributes.state.type.key,
                 DataTypes.STRING.key
             );
         });
 
-        it("test address.zip is string", function(){
+        it("test address.zip is string", function () {
             assert.equal(
                 db.models.address.rawAttributes.zip.type.key,
                 DataTypes.STRING.key
@@ -319,7 +319,7 @@ describe("test schema_to_models", function () {
             );
         });
 
-        it("test price_history.price_history is float", function(){
+        it("test price_history.price_history is float", function () {
             assert.equal(
                 db.models.price_history.rawAttributes.price_history.type.key,
                 DataTypes.FLOAT.key
@@ -329,20 +329,19 @@ describe("test schema_to_models", function () {
         it("test one to many relation between person and vehicle", function () {
             assert.equal(
                 "personId" in
-                    db.models.person.associations.vehicles.target
-                        .rawAttributes,
+                    db.models.person.associations.vehicles.target.rawAttributes,
                 true
             );
         });
 
-        it("test vehicle.make is string", function(){
+        it("test vehicle.make is string", function () {
             assert.equal(
                 db.models.vehicle.rawAttributes.make.type.key,
                 DataTypes.STRING.key
             );
         });
 
-        it("test vehicle.model is string", function(){
+        it("test vehicle.model is string", function () {
             assert.equal(
                 db.models.vehicle.rawAttributes.model.type.key,
                 DataTypes.STRING.key
@@ -352,8 +351,7 @@ describe("test schema_to_models", function () {
         it("test one to many relation between person and matrix", function () {
             assert.equal(
                 "personId" in
-                    db.models.person.associations.matrices.target
-                        .rawAttributes,
+                    db.models.person.associations.matrices.target.rawAttributes,
                 true
             );
         });
@@ -361,13 +359,12 @@ describe("test schema_to_models", function () {
         it("test one to many relation between matrix and element", function () {
             assert.equal(
                 "matrixId" in
-                    db.models.matrix.associations.elements.target
-                        .rawAttributes,
+                    db.models.matrix.associations.elements.target.rawAttributes,
                 true
             );
         });
 
-        it("test element.element is integer", function(){
+        it("test element.element is integer", function () {
             assert.equal(
                 db.models.element.rawAttributes.element.type.key,
                 DataTypes.INTEGER.key

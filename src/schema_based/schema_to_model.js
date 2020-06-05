@@ -16,24 +16,24 @@ module.exports = {
             } else if (property["type"] === "array") {
                 let new_schema;
 
-                if (!(["array", "object"].includes(property["items"]["type"]))){
+                if (!["array", "object"].includes(property["items"]["type"])) {
                     new_schema = {
                         title: key,
                         properties: {},
                     };
                     new_schema["properties"][key] = property["items"];
-                }
-                else if (property["items"]["type"] === "object"){
+                } else if (property["items"]["type"] === "object") {
                     new_schema = property["items"];
                     new_schema["title"] = key;
-                }
-                else {
+                } else {
                     new_schema = {
                         title: key,
                         type: "object",
-                        properties: {}
+                        properties: {},
                     };
-                    new_schema["properties"][property["items"]["items"]["title"]] = property["items"];
+                    new_schema["properties"][
+                        property["items"]["items"]["title"]
+                    ] = property["items"];
                 }
                 nested_arrays.push(schema_to_model(db, new_schema));
             } else {
