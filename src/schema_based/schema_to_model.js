@@ -14,11 +14,19 @@ module.exports = {
                 new_schema["title"] = key;
                 nested_objects.push(schema_to_model(db, new_schema));
             } else if (property["type"] === "array") {
-                let new_schema = {
-                    title: key,
-                    properties: {},
-                };
-                new_schema["properties"][key] = property["items"];
+                let new_schema;
+
+                if (!(["array", "object"].includes(property["items"]["type"]))){
+                    new_schema = {
+                        title: key,
+                        properties: {},
+                    };
+                    new_schema["properties"][key] = property["items"];
+                }
+                else if (property["items"]["type"] === "object"){
+                    new_schema = property["items"];
+                    new_schema["title"] = key;
+                }
                 nested_arrays.push(schema_to_model(db, new_schema));
             } else {
                 let type;

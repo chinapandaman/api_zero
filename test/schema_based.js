@@ -324,5 +324,19 @@ describe("test schema_to_models", function () {
                 true
             );
         });
+
+        it("test vehicle.make is string", function(){
+            assert.equal(
+                db.models.vehicle.rawAttributes.make.type.key,
+                DataTypes.STRING.key
+            );
+        });
+
+        it("test vehicle.model is string", function(){
+            assert.equal(
+                db.models.vehicle.rawAttributes.model.type.key,
+                DataTypes.STRING.key
+            );
+        });
     });
 });
