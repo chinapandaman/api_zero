@@ -228,6 +228,16 @@ describe("test schema_to_models", function () {
                             }
                         }
                     }
+                },
+                matrix: {
+                    type: "array",
+                    items: {
+                        type: "array",
+                        items: {
+                            title: "element",
+                            type: "integer"
+                        }
+                    }
                 }
             },
             required: [],
@@ -336,6 +346,31 @@ describe("test schema_to_models", function () {
             assert.equal(
                 db.models.vehicle.rawAttributes.model.type.key,
                 DataTypes.STRING.key
+            );
+        });
+
+        it("test one to many relation between person and matrix", function () {
+            assert.equal(
+                "personId" in
+                    db.models.person.associations.matrices.target
+                        .rawAttributes,
+                true
+            );
+        });
+
+        it("test one to many relation between matrix and element", function () {
+            assert.equal(
+                "matrixId" in
+                    db.models.matrix.associations.elements.target
+                        .rawAttributes,
+                true
+            );
+        });
+
+        it("test element.element is integer", function(){
+            assert.equal(
+                db.models.element.rawAttributes.element.type.key,
+                DataTypes.INTEGER.key
             );
         });
     });

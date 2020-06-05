@@ -27,6 +27,14 @@ module.exports = {
                     new_schema = property["items"];
                     new_schema["title"] = key;
                 }
+                else {
+                    new_schema = {
+                        title: key,
+                        type: "object",
+                        properties: {}
+                    };
+                    new_schema["properties"][property["items"]["items"]["title"]] = property["items"];
+                }
                 nested_arrays.push(schema_to_model(db, new_schema));
             } else {
                 let type;
