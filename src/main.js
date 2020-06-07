@@ -8,14 +8,6 @@ const db = new Sequelize({
     storage: "db.sqlite",
 });
 
-db.authenticate()
-    .then(() => {
-        console.log("connected");
-    })
-    .catch((err) => {
-        console.error(err);
-    });
-
 app.get("/", function (req, res) {
     res.send("Hello World!");
 });
