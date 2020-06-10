@@ -6,7 +6,7 @@
   "type": "object",
   "properties": {
     "name": {
-      "type": "string"
+      "$ref": "http://example.com/name.schema.json"
     },
     "age": {
       "type": "integer"
