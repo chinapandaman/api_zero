@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/person.schema.json",
+  "title": "person",
+  "description": "a person",
+  "type": "object",
+  "properties": {
+    "name": {
+      "$ref": "http://example.com/name.schema.json"
+    },
+    "age": {
+      "type": "integer"
+    },
+    "height": {
+      "type": "number"
+    },
+    "is_active": {
+      "type": "boolean"
+    },
+    "nothing": {
+      "type": "null"
+    }
+  },
+  "required": []
+}
